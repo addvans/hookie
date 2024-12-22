@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
     <title>Unity WebGL Player | hookie</title>
     <style>
         body {
@@ -28,6 +28,19 @@
     <canvas id="unity-canvas" tabindex="-1"></canvas>
     <script src="Build/hookie.loader.js"></script>
     <script>
+        // Фиксируем ориентацию в альбомной (landscape) на мобильных устройствах
+        if (window.matchMedia("(orientation: landscape)").matches) {
+            // Если ориентация уже альбомная, сразу фиксируем
+            screen.orientation.lock("landscape");
+        }
+
+        // Слушаем изменение ориентации
+        window.addEventListener('orientationchange', function () {
+            if (window.matchMedia("(orientation: landscape)").matches) {
+                screen.orientation.lock("landscape");
+            }
+        });
+
         createUnityInstance(document.querySelector("#unity-canvas"), {
             dataUrl: "Build/hookie.data",
             frameworkUrl: "Build/hookie.framework.js",
