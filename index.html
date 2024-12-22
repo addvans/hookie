@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Unity WebGL Player | hookie</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #231F20;
+            overflow: hidden;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Сохраняет пропорции, вписывая игру в окно */
+        }
+    </style>
+</head>
+<body>
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <script src="Build/hookie.loader.js"></script>
+    <script>
+        createUnityInstance(document.querySelector("#unity-canvas"), {
+            dataUrl: "Build/hookie.data",
+            frameworkUrl: "Build/hookie.framework.js",
+            codeUrl: "Build/hookie.wasm",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "addvans",
+            productName: "hookie",
+            productVersion: "0.2",
+        }).then((unityInstance) => {
+            // Дополнительно подстраиваем размер canvas под доступное окно
+            window.addEventListener('resize', () => {
+                unityInstance.Module.canvas.width = window.innerWidth;
+                unityInstance.Module.canvas.height = window.innerHeight;
+            });
+        });
+    </script>
+</body>
+</html>
