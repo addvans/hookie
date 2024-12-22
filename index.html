@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimal-ui">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Unity WebGL Player | hookie</title>
     <style>
         body {
@@ -28,19 +28,6 @@
     <canvas id="unity-canvas" tabindex="-1"></canvas>
     <script src="Build/hookie.loader.js"></script>
     <script>
-        // Фиксируем ориентацию в альбомной (landscape) на мобильных устройствах
-        if (window.matchMedia("(orientation: landscape)").matches) {
-            // Если ориентация уже альбомная, сразу фиксируем
-            screen.orientation.lock("landscape");
-        }
-
-        // Слушаем изменение ориентации
-        window.addEventListener('orientationchange', function () {
-            if (window.matchMedia("(orientation: landscape)").matches) {
-                screen.orientation.lock("landscape");
-            }
-        });
-
         createUnityInstance(document.querySelector("#unity-canvas"), {
             dataUrl: "Build/hookie.data",
             frameworkUrl: "Build/hookie.framework.js",
@@ -56,6 +43,17 @@
                 unityInstance.Module.canvas.height = window.innerHeight;
             });
         });
+        function getDeviceInfo() {
+            const isMobile = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone|Opera Mini|IEMobile/i.test(navigator.userAgent);
+            const deviceInfo = {
+                isMobile: isMobile,
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                screenWidth: window.screen.width,
+                screenHeight: window.screen.height,
+            };
+            return JSON.stringify(deviceInfo); // Возвращаем строку JSON для удобства передачи в C#
+        }
     </script>
 </body>
 </html>
